@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
+<meta name="googlebot" content="noindex, nofollow, noimageindex">
+<meta name="bingbot" content="noindex, nofollow, noimageindex">
+<meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noimageindex, noarchive">
 <title>Odliczanie do Naszego Spotkania</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -771,6 +775,21 @@ function launchConfetti(){
   }
   burst();setTimeout(burst,1500);setTimeout(burst,3000);setInterval(burst,5000);
 }
+
+// ── SECURITY: Disable right-click & drag on images ──
+document.addEventListener('contextmenu',e=>{
+  if(e.target.tagName==='IMG'||e.target.tagName==='VIDEO'||e.target.closest('.masonry-item')||e.target.closest('.lightbox')){
+    e.preventDefault();
+  }
+});
+document.addEventListener('dragstart',e=>{
+  if(e.target.tagName==='IMG'||e.target.tagName==='VIDEO'){e.preventDefault()}
+});
+// Disable image long-press save on mobile
+document.querySelectorAll('.masonry-item img, .masonry-item video').forEach(el=>{
+  el.style.webkitTouchCallout='none';
+  el.style.pointerEvents='none';
+});
 </script>
 </body>
 </html>
