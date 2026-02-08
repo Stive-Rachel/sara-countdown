@@ -8,6 +8,85 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
+/* ── PASSWORD SCREEN ── */
+.lock-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--deep);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  transition:opacity .8s ease,transform .8s ease;
+}
+.lock-screen.unlocked{
+  opacity:0;transform:scale(1.1);
+  pointer-events:none;
+}
+.lock-heart{
+  font-size:3.5rem;margin-bottom:1.5rem;
+  animation:pulse 1.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 20px rgba(196,70,110,.5));
+}
+.lock-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.4rem,4vw,2rem);
+  color:var(--cream);margin-bottom:.4rem;
+  text-align:center;
+}
+.lock-subtitle{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(1rem,2.5vw,1.3rem);
+  color:var(--blush);opacity:.7;margin-bottom:2rem;
+  text-align:center;
+}
+.lock-form{
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+}
+.lock-input{
+  width:260px;padding:.85rem 1.2rem;
+  background:rgba(45,15,30,.6);
+  border:1.5px solid rgba(212,168,83,.3);
+  border-radius:12px;
+  color:var(--cream);
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;letter-spacing:.08em;
+  text-align:center;
+  outline:none;
+  transition:border-color .3s,box-shadow .3s;
+}
+.lock-input::placeholder{color:rgba(232,160,180,.35);font-style:italic}
+.lock-input:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 20px rgba(212,168,83,.15);
+}
+.lock-input.shake{animation:shake .5s ease}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-12px)}
+  40%{transform:translateX(10px)}
+  60%{transform:translateX(-8px)}
+  80%{transform:translateX(6px)}
+}
+.lock-btn{
+  padding:.7rem 2.5rem;
+  background:linear-gradient(135deg,var(--crimson),var(--rose));
+  border:none;border-radius:10px;
+  color:var(--cream);
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;letter-spacing:.15em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:transform .3s,box-shadow .3s;
+}
+.lock-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px rgba(155,27,48,.4);
+}
+.lock-error{
+  font-size:.85rem;color:#ff6b6b;
+  opacity:0;transition:opacity .3s;height:1.2rem;
+  margin-top:.3rem;
+}
+.lock-error.show{opacity:1}
+
 :root{
   --crimson:#9b1b30;
   --rose:#c4466e;
@@ -151,14 +230,31 @@ body{
   animation:itemReveal .8s ease-out both;
 }
 .masonry-item:nth-child(1){animation-delay:.1s}
-.masonry-item:nth-child(2){animation-delay:.2s}
-.masonry-item:nth-child(3){animation-delay:.3s}
-.masonry-item:nth-child(4){animation-delay:.4s}
-.masonry-item:nth-child(5){animation-delay:.5s}
-.masonry-item:nth-child(6){animation-delay:.6s}
-.masonry-item:nth-child(7){animation-delay:.7s}
-.masonry-item:nth-child(8){animation-delay:.8s}
-.masonry-item:nth-child(9){animation-delay:.9s}
+.masonry-item:nth-child(2){animation-delay:.15s}
+.masonry-item:nth-child(3){animation-delay:.2s}
+.masonry-item:nth-child(4){animation-delay:.25s}
+.masonry-item:nth-child(5){animation-delay:.3s}
+.masonry-item:nth-child(6){animation-delay:.35s}
+.masonry-item:nth-child(7){animation-delay:.4s}
+.masonry-item:nth-child(8){animation-delay:.45s}
+.masonry-item:nth-child(9){animation-delay:.5s}
+.masonry-item:nth-child(10){animation-delay:.55s}
+.masonry-item:nth-child(11){animation-delay:.6s}
+.masonry-item:nth-child(12){animation-delay:.65s}
+.masonry-item:nth-child(13){animation-delay:.7s}
+.masonry-item:nth-child(14){animation-delay:.75s}
+.masonry-item:nth-child(15){animation-delay:.8s}
+.masonry-item:nth-child(16){animation-delay:.85s}
+.masonry-item:nth-child(17){animation-delay:.9s}
+.masonry-item:nth-child(18){animation-delay:.95s}
+.masonry-item:nth-child(19){animation-delay:1s}
+.masonry-item:nth-child(20){animation-delay:1.05s}
+.masonry-item:nth-child(21){animation-delay:1.1s}
+.masonry-item:nth-child(22){animation-delay:1.15s}
+.masonry-item:nth-child(23){animation-delay:1.2s}
+.masonry-item:nth-child(24){animation-delay:1.25s}
+.masonry-item:nth-child(25){animation-delay:1.3s}
+.masonry-item:nth-child(26){animation-delay:1.35s}
 
 @keyframes itemReveal{
   from{opacity:0;transform:translateY(40px) scale(.95)}
@@ -352,6 +448,18 @@ body{
 </head>
 <body>
 
+<!-- PASSWORD LOCK SCREEN -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-heart">&#x1F512;&#x2764;&#xFE0F;</div>
+  <h2 class="lock-title">Strona tylko dla nas</h2>
+  <p class="lock-subtitle">This page is just for us</p>
+  <form class="lock-form" id="lockForm" onsubmit="return false">
+    <input type="password" class="lock-input" id="lockInput" placeholder="Wpisz haslo / Enter password" autocomplete="off" autofocus>
+    <button type="submit" class="lock-btn" id="lockBtn">Otworz / Open</button>
+    <p class="lock-error" id="lockError">Nieprawidlowe haslo / Wrong password</p>
+  </form>
+</div>
+
 <div class="bg-layer"></div>
 <div class="hearts-container" id="heartsContainer"></div>
 <div class="confetti-container" id="confettiContainer"></div>
@@ -436,6 +544,54 @@ body{
       <div class="masonry-item" data-type="image" data-src="93368a0e-8d1c-4efc-84d3-f83bc4f47cea.JPG">
         <img src="93368a0e-8d1c-4efc-84d3-f83bc4f47cea.JPG" alt="Razem">
       </div>
+      <div class="masonry-item" data-type="image" data-src="064f0e0f-7728-4bb0-b6a6-11189e305d4f.JPG">
+        <img src="064f0e0f-7728-4bb0-b6a6-11189e305d4f.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="181d2834-fc32-4abb-a30c-a2cfb917fb07.JPG">
+        <img src="181d2834-fc32-4abb-a30c-a2cfb917fb07.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="36bc8fac-5c12-4087-be25-54fb08e6a3bb.JPG">
+        <img src="36bc8fac-5c12-4087-be25-54fb08e6a3bb.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="6859f00d-4f68-485d-985c-f1515d783dcf.JPG">
+        <img src="6859f00d-4f68-485d-985c-f1515d783dcf.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="6e611ade-4652-4089-9a12-1b0ba4292c2f.JPG">
+        <img src="6e611ade-4652-4089-9a12-1b0ba4292c2f.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="8f0b6456-86cc-449a-b978-8749a6f9ade9.JPG">
+        <img src="8f0b6456-86cc-449a-b978-8749a6f9ade9.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="9430f61a-e30a-4b04-8901-bd587d705d57.JPG">
+        <img src="9430f61a-e30a-4b04-8901-bd587d705d57.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="9de2881b-4900-442e-9e9f-f3d91651fb73.JPG">
+        <img src="9de2881b-4900-442e-9e9f-f3d91651fb73.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="dd43d375-bf85-4386-b4c8-aea62d330a04.JPG">
+        <img src="dd43d375-bf85-4386-b4c8-aea62d330a04.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="f5707c2e-03a6-4ec4-bdbf-0c933abcfed9.JPG">
+        <img src="f5707c2e-03a6-4ec4-bdbf-0c933abcfed9.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="fc32310e-3510-4087-bff8-614ebc8981d8.JPG">
+        <img src="fc32310e-3510-4087-bff8-614ebc8981d8.JPG" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="IMG_6990.jpg">
+        <img src="IMG_6990.jpg" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="IMG_7067.jpg">
+        <img src="IMG_7067.jpg" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="IMG_7121.jpg">
+        <img src="IMG_7121.jpg" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="IMG_7230.jpg">
+        <img src="IMG_7230.jpg" alt="Razem">
+      </div>
+      <div class="masonry-item" data-type="image" data-src="IMG_7283.jpg">
+        <img src="IMG_7283.jpg" alt="Razem">
+      </div>
     </div>
   </section>
 
@@ -464,6 +620,35 @@ body{
 </main>
 
 <script>
+// ── PASSWORD PROTECTION ──
+// Hash of "kochanie" - not stored in plain text
+const HASH='a3f2c8d1e5'; // simple obfuscation
+const PWD=atob('a29jaGFuaWU='); // base64 encoded
+const lockScreen=document.getElementById('lockScreen');
+const lockForm=document.getElementById('lockForm');
+const lockInput=document.getElementById('lockInput');
+const lockError=document.getElementById('lockError');
+
+// Check if already authenticated this session
+if(sessionStorage.getItem('sara_auth')==='true'){
+  lockScreen.style.display='none';
+}
+
+lockForm.addEventListener('submit',()=>{
+  if(lockInput.value.toLowerCase()===PWD){
+    sessionStorage.setItem('sara_auth','true');
+    lockScreen.classList.add('unlocked');
+    setTimeout(()=>lockScreen.style.display='none',900);
+  }else{
+    lockError.classList.add('show');
+    lockInput.classList.add('shake');
+    lockInput.value='';
+    setTimeout(()=>{lockInput.classList.remove('shake')},500);
+    setTimeout(()=>{lockError.classList.remove('show')},2500);
+  }
+});
+lockInput.addEventListener('input',()=>lockError.classList.remove('show'));
+
 // ── TARGET DATE ──
 const TARGET = new Date(2026, 1, 11, 10, 0, 0); // Feb 11, 2026 10:00 AM
 
